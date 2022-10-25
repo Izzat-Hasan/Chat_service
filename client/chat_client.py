@@ -134,6 +134,7 @@ class ChatClient:
     async def get_user_msg(self):
         return await self._protocol._user_messages_q.get()
 
+
 if __name__ == '__main__':
     LOCAL_HOST = '127.0.0.1'
     PORT = 8080
