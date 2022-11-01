@@ -51,6 +51,21 @@ class ChatServerProtocol(asyncio.Protocol):
             response = '/lrooms {}$'.format('\n'.join(room_msgs))
             self._transport.write(response.encode('utf-8'))
 
+#create room user story. Still working on it...
+        elif command.startswith('/croom '):
+            room_dict = {'name': 'public',
+                         'owner': 'system',
+                         'description': 'description should be coming from the client'}
+            #add logic to check if room name already exists, and return error message to client
+
+            room_name = command.lstrip('/croom').rstrip('$').strip()
+            room_dict['name'] = room_name
+            ChatServerProtocol.rooms.append(room_dict)
+
+            response = '/croom {}$'.format('\n'.join('success'))
+            self._transport.write(response.encode('utf-8'))
+
+
         elif command.startswith('/post '):
             # expected request format: /post public&hello everyone
             room, msg = command.lstrip('/post').rstrip('$').split('&')
