@@ -71,7 +71,6 @@ async def handle_user_input(chat_client, loop):
 
         elif command == '5':
             try:
-
                 user_message = await aioconsole.ainput('enter your message: ')
                 await chat_client.post(user_message, 'public')
 
@@ -83,11 +82,14 @@ async def handle_user_input(chat_client, loop):
         # I say we can divide and conquer these remaining 3 if that sounds like
         # a good idea to y'all. - Andrew
 
-        '''elif command == '6':
+        elif command == '6':
             try:
-                # code for when room doesnt already exist and can be made
+                room_name = await aioconsole.ainput('enter room name: ')
+                await chat_client.post(room_name, 'name')
+                print("here")
+
             except Exception as e:
-                # error code for when room already exists'''
+                print('error')
 
         '''elif command == '7':
                     try:
