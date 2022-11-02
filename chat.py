@@ -24,6 +24,11 @@ async def handle_user_input(chat_client, loop):
         print('< 3 > login')
         print('< 4 > list rooms')
         print('< 5 > post message to a room')
+        # For the time being, I put these here for visibility's sake, do not input these options - Andrew
+        print('< 6 > create private room')
+        print('< 7 > join private room')
+        print('< 8 > leave room')
+        print('< 9 > DM another user')
 
 
         print('\tchoice: ', end='', flush=True)
@@ -72,6 +77,37 @@ async def handle_user_input(chat_client, loop):
 
             except Exception as e:
                 print('error posting message {}'.format(e))
+
+        # I added the other option's skeletons below
+        # I have an idea that once we get the main "create room" function done
+        # I say we can divide and conquer these remaining 3 if that sounds like
+        # a good idea to y'all. - Andrew
+
+        '''elif command == '6':
+            try:
+                # code for when room doesnt already exist and can be made
+            except Exception as e:
+                # error code for when room already exists'''
+
+        '''elif command == '7':
+                    try:
+                        # code for when created room is joinable
+                    except Exception as e:
+                        # error code for when you are either already in a room, or if it doesn't exist'''
+
+        '''elif command == '8':
+                    try:
+                        # code for leaving private room
+                    except Exception as e:
+                        # error code for when you are not in a private room (also for trying to leave the
+                        public room, as you can simply leave that by logging out using option 1)'''
+
+        '''elif command == '9':
+            try:
+                # code for sending a message to another user (either by making a miniature instance of a private room
+                that automatically closes after the message is sent)
+            except Exception as e:
+                # error code for if user doesn't exist'''
 
 
 @click.group()
