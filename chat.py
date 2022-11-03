@@ -1,6 +1,7 @@
 import aioconsole
 import asyncio
 import click
+
 from server.chat_server import ChatServer
 from client.chat_client import (
     ChatClient,
@@ -84,11 +85,13 @@ async def handle_user_input(chat_client, loop):
 
         elif command == '6':
             room_info = await aioconsole.ainput('enter room name, owner, and descriptions separated by &: ')
+
             parts = room_info.split("&")
             room_name = parts[0]
             try:
-                await chat_client.crooms(room_info)
-                print(f'created room: {room_name}')
+                result = await chat_client.crooms(room_info)
+
+                print(f'created room: {result}')
 
             except Exception as e:
                 print('error')

@@ -46,6 +46,7 @@ class ChatClient:
         self._ip = ip
         self._port = port
         self._connected = False
+        self._login_name = None
 
     def disconnect(self):
         if not self._connected:
@@ -110,6 +111,9 @@ class ChatClient:
         elif success != 'success':
             raise LoginError()
 
+
+        self._login_name = login_name
+
     async def lrooms(self):
         # expected response format:
         # /lroom public&system&public room\nroom1, omari, room to discuss chat service impl
@@ -128,10 +132,18 @@ class ChatClient:
 
     # create room user story. Still working on it...
     async def crooms(self, room_name):
-        self._transport.write('/croom {}$'.format(room_name).encode('utf-8'))
-        crooms_response = await self._protocol._responses_q.get()
+        """if len(user_input) > 10:
+            print("error! you must enter a naem less than 10 characters")"""
+        if self._login_name == None:
 
-        return True
+        self._transport.write('/croom {}&{}$'.format(room_name, self._login_name).encode('utf-8'))
+        crooms_response = await self._protocol._responses_q.get()
+        result = crooms_response.lstrip('/croom').rstrip('$').strip()
+        if result == 'sucess':
+            return True
+        else:
+            return result
+
 
     async def post(self, msg, room):
         # post to a room:

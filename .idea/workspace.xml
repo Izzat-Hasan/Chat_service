@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4d53985b-c364-4c46-bb0c-4349840f7137" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/chat-service.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/chat-service.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chat.py" beforeDir="false" afterPath="$PROJECT_DIR$/chat.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/chat_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/chat_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/chat_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/chat_server.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
