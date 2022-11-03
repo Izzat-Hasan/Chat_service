@@ -129,7 +129,7 @@ class ChatClient:
     # create room user story. Still working on it...
     async def crooms(self, room_name):
         self._transport.write('/croom {}$'.format(room_name).encode('utf-8'))
-        croom_response = await self._protocol._responses_q.get()
+        crooms_response = await self._protocol._responses_q.get()
 
         return True
 

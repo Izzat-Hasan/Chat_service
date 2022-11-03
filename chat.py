@@ -58,7 +58,7 @@ async def handle_user_input(chat_client, loop):
             except LoginConflictError:
                 print('login name already exists, pick another name')
             except LoginError:
-                print('error loggining in, try again')
+                print('error logging in, try again')
 
         elif command == '4':
             try:
@@ -83,10 +83,10 @@ async def handle_user_input(chat_client, loop):
         # a good idea to y'all. - Andrew
 
         elif command == '6':
+            room_name = await aioconsole.ainput('enter room name: ')
             try:
-                room_name = await aioconsole.ainput('enter room name: ')
-                await chat_client.post(room_name, 'name')
-                print("here")
+                await chat_client.crooms(room_name)
+                print(f'created room: {room_name}')
 
             except Exception as e:
                 print('error')
