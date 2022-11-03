@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4d53985b-c364-4c46-bb0c-4349840f7137" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/chat-service.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/chat-service.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chat.py" beforeDir="false" afterPath="$PROJECT_DIR$/chat.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/chat_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/chat_client.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,6 +173,14 @@
       <option name="presentableId" value="Default" />
       <updated>1539003894541</updated>
     </task>
+    <task id="LOCAL-00001" summary="Fixed some functionality within chat and client">
+      <created>1667434114471</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1667434114471</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -212,6 +216,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Fixed some functionality within chat and client" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed some functionality within chat and client" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/server/chat_server.py" />

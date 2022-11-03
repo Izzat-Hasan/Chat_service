@@ -83,9 +83,11 @@ async def handle_user_input(chat_client, loop):
         # a good idea to y'all. - Andrew
 
         elif command == '6':
-            room_name = await aioconsole.ainput('enter room name: ')
+            room_info = await aioconsole.ainput('enter room name, owner, and descriptions separated by &: ')
+            parts = room_info.split("&")
+            room_name = parts[0]
             try:
-                await chat_client.crooms(room_name)
+                await chat_client.crooms(room_info)
                 print(f'created room: {room_name}')
 
             except Exception as e:
