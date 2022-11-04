@@ -90,11 +90,10 @@ async def handle_user_input(chat_client, loop):
             room_name = parts[0]
 
             try:
-                if len(room_name) > 10 or any(c in special_characters for c in room_name) or ' ' in word:
-                    print("error! you must enter a name less than 10 characters with no special symbols and no spaces")
+                if len(room_name) > 10 or any(c in special_characters for c in room_name):
+                    print("error! you must enter a name less than 10 characters with no special symbols")
                     break
                 result = await chat_client.crooms(room_info)
-
                 print(f'created room: {result}')
 
             except Exception as e:
