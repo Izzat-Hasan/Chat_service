@@ -61,15 +61,14 @@ class ChatServerProtocol(asyncio.Protocol):
             #check if name already exists.
             exsiting_rooms = [r['name'] for r in ChatServerProtocol.rooms]
             if room_name in exsiting_rooms:
-                response = '/croom {}$'.format('\n'.join('room already exists'))
+                response = '/croom {}$'.format(''.join('room already exists'))
                 self._transport.write(response.encode('utf-8'))
-
             room_dict['name'] = room_name
             ChatServerProtocol.rooms.append(room_dict)
             user_record = ChatServerProtocol.clients[self._transport]
             user_record['rooms'].append(room_name)
 
-            response = '/croom {}$'.format('\n'.join('success'))
+            response = '/croom {}$'.format(''.join('success'))
             self._transport.write(response.encode('utf-8'))
 
 
