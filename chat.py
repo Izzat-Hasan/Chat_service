@@ -84,7 +84,7 @@ async def handle_user_input(chat_client, loop):
         # a good idea to y'all. - Andrew
 
         elif command == '6':
-            special_characters = "!@# $%^&*()-+?_=:;,<>/"
+            special_characters = "!@#$%^&*())_+=|}{:?><[];',./,"
             room_info = await aioconsole.ainput('enter room name, owner, and descriptions separated by &: ')
             parts = room_info.split("&")
             room_name = parts[0]
