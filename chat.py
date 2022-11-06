@@ -99,6 +99,35 @@ async def handle_user_input(chat_client, loop):
             except Exception as e:
                 print('error')
 
+        elif command == '9':
+            try:
+                # grabs all users logged in
+                users = await chat_client.lru()
+                print("\n Select a user to message directly.")
+                usernumber = 0
+                # prints list of users and assigns a number to them
+                for u in users:
+                    usernumber += 1
+                    print(str(usernumber) + ") " + str(u))
+                dm_choice = await aioconsole.ainput("Choice: ")
+                # prints recipient to for clarity
+                recipient = users[int(dm_choice) - 1]
+                print(f'Recipient: {recipient}')
+                dm_message = await aioconsole.ainput("Enter your message: ")
+                # Right now this just is basically posting to the public room. It is a placeholder until I figure
+                # out the right way to send a message to a person directly. I noticed in the connections there is
+                # a unique number, which could be the answer to this problem, but I haven't found out the
+                # correct way to call it yet.
+                print(f"Message from {login_name}:")
+                await chat_client.post(dm_message, 'public')
+
+            except Exception as e:
+                print("error")
+
+
+
+
+
         '''elif command == '7':
                     try:
                         # code for when created room is joinable
@@ -112,12 +141,7 @@ async def handle_user_input(chat_client, loop):
                         # error code for when you are not in a private room (also for trying to leave the
                         public room, as you can simply leave that by logging out using option 1)'''
 
-        '''elif command == '9':
-            try:
-                # code for sending a message to another user (either by making a miniature instance of a private room
-                that automatically closes after the message is sent)
-            except Exception as e:
-                # error code for if user doesn't exist'''
+
 
 
 @click.group()

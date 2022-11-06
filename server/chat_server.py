@@ -97,7 +97,7 @@ class ChatServerProtocol(asyncio.Protocol):
 
     def connection_lost(self, exc):
         """remote closed connection"""
-        print('[-] lost connectio to {}'.format(ChatServerProtocol.clients[self._transport]))
+        print('[-] lost connection to {}'.format(ChatServerProtocol.clients[self._transport]))
         self._transport.close()
 
 
