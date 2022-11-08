@@ -131,10 +131,10 @@ class ChatClient:
         return rooms
 
     # create room user story. Still working on it...
-    async def crooms(self, room_name):
+    async def crooms(self, room_name, room_description):
 
-        if self._login_name == None:
-            self._transport.write('/croom {}&{}$'.format(room_name, self._login_name).encode('utf-8'))
+        if self._login_name != None:
+            self._transport.write('/croom {}&{}&{}$'.format(room_name, self._login_name, room_description).encode('utf-8'))
             crooms_response = await self._protocol._responses_q.get()
             result = crooms_response.lstrip('/croom').rstrip('$').strip()
         if result == 'sucess':
