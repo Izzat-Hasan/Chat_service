@@ -86,16 +86,17 @@ async def handle_user_input(chat_client, loop):
         elif command == '6':
             room_name = await aioconsole.ainput('enter room name: ')
             room_description = await aioconsole.ainput('enter room descriptions: ')
+            special_characters = "!@#$%^&*())_+=|}{:?><[];' ,./,"
 
             try:
                 if len(room_name) > 10 or any(c in special_characters for c in room_name):
-                    print("error! you must enter a name less than 10 characters with no special symbols")
+                    print("error! you must enter a name less than 10 characters, with no spaces or special symbols.")
                     continue
                 result = await chat_client.crooms(room_name, room_description)
-                print(f'created room: {result}')
+                print(f'created room: {room_name}')
 
             except Exception as e:
-                print('error')
+                print('error, you are not logged in. Please log in and try again.')
 
         elif command == '9':
             try:
