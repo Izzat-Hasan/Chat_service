@@ -88,7 +88,7 @@ async def handle_user_input(chat_client, loop):
                     print("error! you must enter a name less than 10 characters, with no spaces or special symbols.")
                     continue
                 result = await chat_client.crooms(room_name, room_description)
-                print(f'created room: {result}')
+                click.echo(result)
 
             except Exception as e:
                 print('error, you are not logged in. Please log in and try again.')
@@ -96,6 +96,11 @@ async def handle_user_input(chat_client, loop):
         elif command == '7':
             room_name = await aioconsole.ainput('enter room name: ')
             result = await chat_client.join_room(room_name)
+            click.echo(result)
+
+        elif command == '8':
+            room_name = await aioconsole.ainput('enter room name: ')
+            result = await chat_client.leave_room(room_name)
             click.echo(result)
 
         elif command == '9':
@@ -127,15 +132,6 @@ async def handle_user_input(chat_client, loop):
 
             except UnboundLocalError:
                 print("You must be logged in to DM a user.")
-
-
-
-        '''elif command == '8':
-                    try:
-                        # code for leaving private room
-                    except Exception as e:
-                        # error code for when you are not in a private room (also for trying to leave the
-                        public room, as you can simply leave that by logging out using option 1)'''
 
 
 @click.group()
