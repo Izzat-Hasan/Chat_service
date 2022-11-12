@@ -93,35 +93,40 @@ async def handle_user_input(chat_client, loop):
                     print("error! you must enter a name less than 10 characters, with no spaces or special symbols.")
                     continue
                 result = await chat_client.crooms(room_name, room_description)
-                print(f'created room: {room_name}')
+                print(f'created room: {result}')
 
             except Exception as e:
                 print('error, you are not logged in. Please log in and try again.')
 
         elif command == '9':
             try:
-                # grabs all users logged in
-                users = await chat_client.lru()
-                print("\n Select a user to message directly.")
-                usernumber = 0
-                # prints list of users and assigns a number to them
-                for u in users:
-                    usernumber += 1
-                    print(str(usernumber) + ") " + str(u))
-                dm_choice = await aioconsole.ainput("Choice: ")
-                # prints recipient to for clarity
-                recipient = users[int(dm_choice) - 1]
-                print(f'Recipient: {recipient}')
-                dm_message = await aioconsole.ainput("Enter your message: ")
-                # Right now this just is basically posting to the public room. It is a placeholder until I figure
-                # out the right way to send a message to a person directly. I noticed in the connections there is
-                # a unique number, which could be the answer to this problem, but I haven't found out the
-                # correct way to call it yet.
-                print(f"Message from {login_name}:")
-                await chat_client.post(dm_message, 'public')
+                if not login_name:
+                    print()
+                else:
+                    # grabs all users logged in
+                    users = await chat_client.lru()
+                    if not users:
+                        print("There are no users online.")
+                    else:
+                        print("\n Select a user to message directly.")
+                        usernumber = 0
+                        # prints list of users and assigns a number to them
+                        for u in users:
+                            usernumber += 1
+                            print(str(usernumber) + ") " + str(u))
+                        dm_choice = await aioconsole.ainput("Choice: ")
+                        # prints recipient to for clarity
+                        recipient = users[int(dm_choice) - 1]
+                        if recipient == login_name:
+                            print("You can't DM yourself.")
+                        else:
+                            print(f'Recipient: {recipient}')
+                            dm_message = await aioconsole.ainput("Enter your message: ")
+                            await chat_client.dm(recipient, dm_message)
+                            print(f"Message from {login_name}")
 
-            except Exception as e:
-                print("error")
+            except UnboundLocalError:
+                print("You must be logged in to DM a user.")
 
 
 

@@ -56,20 +56,22 @@ class ChatServerProtocol(asyncio.Protocol):
             room_dict = {'name': 'public',
                          'owner': 'system',
                          'description': 'description should be coming from the client'}
-            #add logic to check if room name already exists, and return error message to client
-            room_name = command.lstrip('/croom').rstrip('$').strip()
-            #check if name already exists.
+            room_name, owner, description = command.lstrip('/croom').rstrip('$').strip().split('&')
+
             exsiting_rooms = [r['name'] for r in ChatServerProtocol.rooms]
             if room_name in exsiting_rooms:
                 response = '/croom {}$'.format(''.join('room already exists'))
                 self._transport.write(response.encode('utf-8'))
-            room_dict['name'] = room_name
-            ChatServerProtocol.rooms.append(room_dict)
-            user_record = ChatServerProtocol.clients[self._transport]
-            user_record['rooms'].append(room_name)
+            else:
+                room_dict['name'] = room_name
+                room_dict['owner'] = owner
+                room_dict['description'] = description
 
-            response = '/croom {}$'.format(''.join('success'))
-            self._transport.write(response.encode('utf-8'))
+                ChatServerProtocol.rooms.append(room_dict)
+                user_record = ChatServerProtocol.clients[self._transport]
+                user_record['rooms'].append(room_name)
+                response = '/croom {}$'.format(''.join('success'))
+                self._transport.write(response.encode('utf-8'))
 
 
         elif command.startswith('/post '):
@@ -81,6 +83,21 @@ class ChatServerProtocol(asyncio.Protocol):
             msg_to_send = '/MSG {}$'.format(msg)
             for transport in transports:
                 transport.write(msg_to_send.encode('utf-8'))
+
+        elif command.startswith('/dm '):
+            recipient, msg = command.lstrip('/dm').rstrip('$').split('&')
+            #get the transport object for recepient
+
+            for k, v in ChatServerProtocol.clients.items():
+                if v['login-name'] == recipient:
+                    transport = k
+
+            transport.write(msg.encode('utf-8'))
+
+            response = '/dm {}$'.format(''.join('success'))
+            self._transport.write(response.encode('utf-8'))
+
+
 
     def connection_made(self, transport: asyncio.Transport):
         """Called on new client connections"""

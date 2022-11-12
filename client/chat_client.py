@@ -142,6 +142,19 @@ class ChatClient:
         else:
             return result
 
+    async def dm(self, recipient, dm_msg):
+        if self._login_name != None:
+            self._transport.write('/dm {}&{}$'.format(recipient, dm_msg).encode('utf-8'))
+            dm_response = await self._protocol._responses_q.get()
+            result = dm_response.lstrip('/dm').rstrip('$').strip()
+            if result == 'success':
+                return True
+            else:
+                return result
+        else:
+            return 'Failed! You must be logged in to DM.'
+
+
 
     async def post(self, msg, room):
         # post to a room:
