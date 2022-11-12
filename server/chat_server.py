@@ -58,11 +58,24 @@ class ChatServerProtocol(asyncio.Protocol):
             existing_room_names = [room['name'] for room in ChatServerProtocol.rooms]
             if room_name not in existing_room_names:
                 response = '/join room does not exist$'
+            elif room_name in ChatServerProtocol.clients[self._transport]['rooms']:
+                response = '/join you already joined this room$'
             else:
-                if room_name in ChatServerProtocol.clients[self._transport]['rooms']:
-                    response = '/join you already joined this room$'
                 ChatServerProtocol.clients[self._transport]['rooms'].append(room_name)
-                response = '/join {}$'.format('sucess')
+                response = '/join {}$'.format('success')
+            self._transport.write(response.encode('utf-8'))
+            ##***LEAVE FUNCTION***##
+        elif command.startswith('/leave '):
+            # response format
+            # /leave success$
+            room_name = command.lstrip('/leave').rstrip('$').strip()
+            existing_room_names = [room['name'] for room in ChatServerProtocol.rooms]
+
+            if room_name in existing_room_names:
+                ChatServerProtocol.clients[self._transport]['rooms'].remove(room_name)
+                response = '/leave {}$'.format('success')
+            else:
+                response = '/leave you are not in that room$'
             self._transport.write(response.encode('utf-8'))
         ##***CREATE ROOM FUNCTION***##
         elif command.startswith('/croom '):
