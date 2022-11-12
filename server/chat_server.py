@@ -15,7 +15,7 @@ class ChatServerProtocol(asyncio.Protocol):
     def _handle_command(self):
         command = ''.join(self._pieces)
         self._pieces = []
-
+        ##***LIST USERS FUNCTION***##
         if command.startswith('/lru'):
             # get list of registered users
             lru = [r['login-name'] for r in ChatServerProtocol.clients.values() if r['login-name']]
@@ -26,7 +26,7 @@ class ChatServerProtocol(asyncio.Protocol):
             response.rstrip(', ')
             response = ''.join([response, '$'])
             self._transport.write(response.encode('utf-8'))
-
+            ##***LOGIN FUNCTION***##
         elif command.startswith('/login '):
             # TODO: check if login-name already exists
             # TODO: what to do when already logged-in
@@ -42,7 +42,7 @@ class ChatServerProtocol(asyncio.Protocol):
                 response = '/login success$'
 
             self._transport.write(response.encode('utf-8'))
-
+            ##***LIST ROOM FUNCTION***##
         elif command.startswith('/lrooms '):
             # response format
             # /lroom public&system&public room\nroom1&omari&room to discuss chat service impl$
@@ -50,8 +50,21 @@ class ChatServerProtocol(asyncio.Protocol):
             room_msgs = ['{}&{}&{}'.format(r['name'], r['owner'], r['description']) for r in ChatServerProtocol.rooms]
             response = '/lrooms {}$'.format('\n'.join(room_msgs))
             self._transport.write(response.encode('utf-8'))
-
-#create room user story. Still working on it...
+            ##***JOIN FUNCTION***##
+        elif command.startswith('/join '):
+            # response format
+            # /join success$
+            room_name = command.lstrip('/join').rstrip('$').strip()
+            existing_room_names = [room['name'] for room in ChatServerProtocol.rooms]
+            if room_name not in existing_room_names:
+                response = '/join room does not exist$'
+            else:
+                if room_name in ChatServerProtocol.clients[self._transport]['rooms']:
+                    response = '/join you already joined this room$'
+                ChatServerProtocol.clients[self._transport]['rooms'].append(room_name)
+                response = '/join {}$'.format('sucess')
+            self._transport.write(response.encode('utf-8'))
+        ##***CREATE ROOM FUNCTION***##
         elif command.startswith('/croom '):
             room_dict = {'name': 'public',
                          'owner': 'system',
@@ -72,8 +85,7 @@ class ChatServerProtocol(asyncio.Protocol):
                 user_record['rooms'].append(room_name)
                 response = '/croom {}$'.format(''.join('success'))
                 self._transport.write(response.encode('utf-8'))
-
-
+            ##***POST FUNCTION***##
         elif command.startswith('/post '):
             # expected request format: /post public&hello everyone
             room, msg = command.lstrip('/post').rstrip('$').split('&')
@@ -83,7 +95,7 @@ class ChatServerProtocol(asyncio.Protocol):
             msg_to_send = '/MSG {}$'.format(msg)
             for transport in transports:
                 transport.write(msg_to_send.encode('utf-8'))
-
+            ##***DM FUNCTION***##
         elif command.startswith('/dm '):
             recipient, msg = command.lstrip('/dm').rstrip('$').split('&')
             #get the transport object for recepient
@@ -96,8 +108,6 @@ class ChatServerProtocol(asyncio.Protocol):
 
             response = '/dm {}$'.format(''.join('success'))
             self._transport.write(response.encode('utf-8'))
-
-
 
     def connection_made(self, transport: asyncio.Transport):
         """Called on new client connections"""
