@@ -25,13 +25,10 @@ async def handle_user_input(chat_client, loop):
         print('< 3 > login')
         print('< 4 > list rooms')
         print('< 5 > post message to a room')
-        # For the time being, I put these here for visibility's sake, do not input these options - Andrew
         print('< 6 > create private room')
         print('< 7 > join private room')
         print('< 8 > leave room')
         print('< 9 > DM another user')
-
-
         print('\tchoice: ', end='', flush=True)
 
         command = await aioconsole.ainput()
@@ -72,16 +69,14 @@ async def handle_user_input(chat_client, loop):
 
         elif command == '5':
             try:
-                user_message = await aioconsole.ainput('enter your message: ')
-                await chat_client.post(user_message, 'public')
-
+                room_choice = await aioconsole.ainput('enter the room you want to post a message to: ')
+                if room_choice == 'public':
+                    user_message = await aioconsole.ainput('enter your message: ')
+                    await chat_client.post(user_message, 'public')
+                else:
+                    print('Room name does not exist.')
             except Exception as e:
                 print('error posting message {}'.format(e))
-
-        # I added the other option's skeletons below
-        # I have an idea that once we get the main "create room" function done
-        # I say we can divide and conquer these remaining 3 if that sounds like
-        # a good idea to y'all. - Andrew
 
         elif command == '6':
             room_name = await aioconsole.ainput('enter room name: ')
@@ -97,6 +92,11 @@ async def handle_user_input(chat_client, loop):
 
             except Exception as e:
                 print('error, you are not logged in. Please log in and try again.')
+
+        elif command == '7':
+            room_name = await aioconsole.ainput('enter room name: ')
+            result = await chat_client.join_room(room_name)
+            click.echo(result)
 
         elif command == '9':
             try:
@@ -130,22 +130,12 @@ async def handle_user_input(chat_client, loop):
 
 
 
-
-
-        '''elif command == '7':
-                    try:
-                        # code for when created room is joinable
-                    except Exception as e:
-                        # error code for when you are either already in a room, or if it doesn't exist'''
-
         '''elif command == '8':
                     try:
                         # code for leaving private room
                     except Exception as e:
                         # error code for when you are not in a private room (also for trying to leave the
                         public room, as you can simply leave that by logging out using option 1)'''
-
-
 
 
 @click.group()
