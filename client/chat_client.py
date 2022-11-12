@@ -135,8 +135,8 @@ class ChatClient:
             self._transport.write('/croom {}&{}&{}$'.format(room_name, self._login_name, room_description).encode('utf-8'))
             crooms_response = await self._protocol._responses_q.get()
             result = crooms_response.lstrip('/croom').rstrip('$').strip()
-        if result == 'sucess':
-            return True
+        if result == 'success':
+            return 'created room: {}'.format(room_name)
         else:
             return result
 
@@ -144,13 +144,25 @@ class ChatClient:
         if self._login_name == None:
             return 'must login first'
 
-
         self._transport.write('/join {}$'.format(room_name).encode('utf-8'))
         response = await self._protocol._responses_q.get()
         result = response.lstrip('/joinroom').rstrip('$').strip()
 
         if result == 'success':
-            return True
+            return 'joined room: {}'.format(room_name)
+        else:
+            return result
+
+    async def leave_room(self, room_name):
+        if self._login_name == None:
+            return 'must login first'
+
+        self._transport.write('/leave {}$'.format(room_name).encode('utf-8'))
+        response = await self._protocol._responses_q.get()
+        result = response.lstrip('/leaveroom').rstrip('$').strip()
+
+        if result == 'success':
+            return 'left room: {}'.format(room_name)
         else:
             return result
 
