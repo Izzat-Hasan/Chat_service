@@ -108,6 +108,7 @@ class ChatServerProtocol(asyncio.Protocol):
             msg_to_send = '/MSG {}$'.format(msg)
             for transport in transports:
                 transport.write(msg_to_send.encode('utf-8'))
+
             ##***DM FUNCTION***##
         elif command.startswith('/dm '):
             recipient, msg = command.lstrip('/dm').rstrip('$').split('&')

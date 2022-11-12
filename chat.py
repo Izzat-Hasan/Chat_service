@@ -70,9 +70,9 @@ async def handle_user_input(chat_client, loop):
         elif command == '5':
             try:
                 room_choice = await aioconsole.ainput('enter the room you want to post a message to: ')
-                if room_choice == 'public':
+                if room_choice:
                     user_message = await aioconsole.ainput('enter your message: ')
-                    await chat_client.post(user_message, 'public')
+                    await chat_client.post(user_message, room_choice)
                 else:
                     print('Room name does not exist.')
             except Exception as e:
@@ -127,9 +127,9 @@ async def handle_user_input(chat_client, loop):
                         else:
                             print(f'Recipient: {recipient}')
                             dm_message = await aioconsole.ainput("Enter your message: ")
-                            await chat_client.dm(recipient, dm_message)
+                            result = await chat_client.dm(recipient, dm_message)
                             print(f"Message from {login_name}")
-
+                            print(f"{result}")
             except UnboundLocalError:
                 print("You must be logged in to DM a user.")
 
