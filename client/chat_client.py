@@ -111,7 +111,6 @@ class ChatClient:
         elif success != 'success':
             raise LoginError()
 
-
         self._login_name = login_name
 
     async def lrooms(self):
@@ -130,7 +129,6 @@ class ChatClient:
 
         return rooms
 
-    # create room user story. Still working on it...
     async def crooms(self, room_name, room_description):
 
         if self._login_name != None:
@@ -138,6 +136,20 @@ class ChatClient:
             crooms_response = await self._protocol._responses_q.get()
             result = crooms_response.lstrip('/croom').rstrip('$').strip()
         if result == 'sucess':
+            return True
+        else:
+            return result
+
+    async def join_room(self, room_name):
+        if self._login_name == None:
+            return 'must login first'
+
+
+        self._transport.write('/join {}$'.format(room_name).encode('utf-8'))
+        response = await self._protocol._responses_q.get()
+        result = response.lstrip('/joinroom').rstrip('$').strip()
+
+        if result == 'success':
             return True
         else:
             return result
@@ -154,11 +166,10 @@ class ChatClient:
         else:
             return 'Failed! You must be logged in to DM.'
 
-
-
     async def post(self, msg, room):
         # post to a room:
         # /post public&hello everyone
+        # Need to work on this.
         self._transport.write('/post {}&{}$'.format(room.strip(), msg.strip()).encode('utf-8'))
 
     async def get_user_msg(self):
