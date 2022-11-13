@@ -179,10 +179,10 @@ class ChatClient:
             return 'Failed! You must be logged in to DM.'
 
     async def post(self, msg, room):
-        # post to a room:
-        # /post public&hello everyone
-        # Need to work on this.
-        self._transport.write('/post {}&{}$'.format(room.strip(), msg.strip()).encode('utf-8'))
+        if self._login_name == None:
+            print('must login first')
+        else:
+            self._transport.write('/post {}&{}$'.format(room.strip(), msg.strip()).encode('utf-8'))
 
     async def get_user_msg(self):
         return await self._protocol._user_messages_q.get()
