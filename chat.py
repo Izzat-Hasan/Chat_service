@@ -14,7 +14,7 @@ from client.chat_client import (
 async def display_msgs(chat_client):
     while True:
         msg = await chat_client.get_user_msg()
-        print('\n\n\t\tRECEIVED MESSAGE: {}'.format(msg))
+        print('\n\n\t\tRECEIVED MESSAGE FROM {}: {}'.format(chat_client._login_name, msg))
 
 
 async def handle_user_input(chat_client, loop):
