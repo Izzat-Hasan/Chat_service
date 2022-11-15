@@ -168,13 +168,7 @@ class ChatClient:
 
     async def dm(self, recipient, dm_msg):
         if self._login_name != None:
-            self._transport.write('/dm {}&{}$'.format(recipient, dm_msg).encode('utf-8'))
-            dm_response = await self._protocol._responses_q.get()
-            result = dm_response.lstrip('/dm').rstrip('$').strip()
-            if result == 'success':
-                return True
-            else:
-                return result
+            self._transport.write('/dm {}&{}&{}$'.format(self._login_name, recipient, dm_msg).encode('utf-8'))
         else:
             return 'Failed! You must be logged in to DM.'
 
@@ -182,7 +176,7 @@ class ChatClient:
         if self._login_name == None:
             print('must login first')
         else:
-            self._transport.write('/post {}&{}$'.format(room.strip(), msg.strip()).encode('utf-8'))
+            self._transport.write('/post {}&{}&{}$'.format(self._login_name, room.strip(), msg.strip()).encode('utf-8'))
 
     async def get_user_msg(self):
         return await self._protocol._user_messages_q.get()
