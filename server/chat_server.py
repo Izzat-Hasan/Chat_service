@@ -101,27 +101,26 @@ class ChatServerProtocol(asyncio.Protocol):
             ##***POST FUNCTION***##
         elif command.startswith('/post '):
             # expected request format: /post public&hello everyone
-            room, msg = command.lstrip('/post').rstrip('$').split('&')
+            sender, room, msg = command.lstrip('/post').rstrip('$').split('&')
 
             transports = [k for k, v in ChatServerProtocol.clients.items() if room.strip() in v['rooms']]
 
-            msg_to_send = '/MSG {}$'.format(msg)
+            msg_to_send = '/MSG {}&{}$'.format(sender, msg)
             for transport in transports:
                 transport.write(msg_to_send.encode('utf-8'))
 
             ##***DM FUNCTION***##
         elif command.startswith('/dm '):
-            recipient, msg = command.lstrip('/dm').rstrip('$').split('&')
+            sender, recipient, msg = command.lstrip('/dm').rstrip('$').split('&')
             #get the transport object for recepient
 
             for k, v in ChatServerProtocol.clients.items():
-                if v['login-name'] == recipient:
+                if v['login-name'].strip() == recipient.strip():
                     transport = k
 
-            transport.write(msg.encode('utf-8'))
+            transport.write('/MSG {}&{}$'.format(sender, msg).encode('utf-8'))
 
-            response = '/dm {}$'.format(''.join('success'))
-            self._transport.write(response.encode('utf-8'))
+            response = '/MSG {}$'.format(''.join('success'))
 
     def connection_made(self, transport: asyncio.Transport):
         """Called on new client connections"""
@@ -166,4 +165,3 @@ class ChatServer:
 if __name__ == '__main__':
     chat_server = ChatServer(port=8080)
     chat_server.start()
-
